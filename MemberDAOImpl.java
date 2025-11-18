@@ -1,4 +1,4 @@
-package zzz;
+package project;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -26,6 +26,26 @@ public class MemberDAOImpl{
 			e.printStackTrace();
 		}
 	}
+	//회원가입-점수는 0으로 우선 설정
+		public void memberInsert(Member m) {
+				Connection con=null;
+				PreparedStatement ps=null;
+				try {
+					con=DriverManager.getConnection(url,user,pwd);
+					String sql="INSERT INTO member VALUES (member_seq.nextval,?,?,?,?,?)";
+					ps=con.prepareStatement(sql);
+					ps.setString(1, m.getName());
+					ps.setString(2, m.getId());
+					ps.setString(3, m.getPw());
+					ps.setString(4, m.getEmail());
+					ps.setInt(5, 0);
+					ps.executeUpdate();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} finally {
+					closeConnection(con,ps);
+				}
+			}
     //로그인-로그인 하면 id와 pw가 맞는지 체크
 	public int loginCheck(String id, String pw) {
 		Connection con=null;
